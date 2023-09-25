@@ -1,0 +1,21 @@
+{
+  "name": "clickfusion",
+  "version": "0.1.0",
+  "description": "Easy click fusion button effects with multiple styles", 
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "bankkroll",
+  "license": "MIT",
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.22",
+    "@types/react-dom": "^18.2.7",
+    "typescript": "^5.2.2"
+  }
+}
