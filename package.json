@@ -1,12 +1,24 @@
 {
   "name": "clickfusion",
-  "version": "0.1.0",
-  "description": "Easy click fusion button effects with multiple styles", 
-  "main": "index.js",
+  "version": "0.1.27",
+  "description": "Easy click fusion button effects with multiple styles",
+  "main": "dist/index.js",
+  "types": "dist/types/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "build": "tsc",
+    "prepublishOnly": "npm run build && npm run format"
   },
-  "keywords": [],
+  "keywords": ["react", "button", "effects", "UI", "click", "fusion"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BankkRoll/ClickFusion.git"
+  },
+  "bugs": {
+    "url": "https://github.com/BankkRoll/ClickFusion/issues"
+  },
+  "homepage": "https://github.com/BankkRoll/ClickFusion#readme",
   "author": "bankkroll",
   "license": "MIT",
   "dependencies": {
@@ -16,6 +28,7 @@
   "devDependencies": {
     "@types/react": "^18.2.22",
     "@types/react-dom": "^18.2.7",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "prettier": "^2.4.1"
   }
 }
