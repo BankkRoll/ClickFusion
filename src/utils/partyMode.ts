@@ -48,8 +48,7 @@ const applyParticleEffect = (
 ): (() => void) => {
   instanceCounter++;
 
-  const sizes = [10, 15, 20];
-  const limit = 45;
+  const limit = 150;
 
   let particles: PartyParticle[] = [];
   let autoAddParticle = false;
@@ -60,26 +59,37 @@ const applyParticleEffect = (
 
   // Function to generate a single particle
   function generateParticle() {
-    const size =
-      options?.size || sizes[Math.floor(Math.random() * sizes.length)];
+    const size = options?.size || 2 + Math.random() * 4;
     const top = mouseY - size / 2;
     const left = mouseX - size / 2;
     const direction = Math.random() <= 0.5 ? -1 : 1;
     const speed = Math.random() * 10 + 5;
     const color = `hsl(${Math.random() * 360}, 70%, 50%)`;
 
+    // Create the SVG element
+    const svgNS = "http://www.w3.org/2000/svg";
+    const svg = document.createElementNS(svgNS, "svg");
+    svg.setAttribute("width", `${size}px`);
+    svg.setAttribute("height", `${size}px`);
+
+    // Create the polygon element (triangle)
+    const triangle = document.createElementNS(svgNS, "polygon");
+    triangle.setAttribute("points", `${size / 2},0 ${size},${size} 0,${size}`);
+    triangle.setAttribute("fill", color);
+
+    // Append the triangle to the SVG
+    svg.appendChild(triangle);
+
+    // Create the particle div to hold the SVG
     const particle = document.createElement("div");
-    particle.style.width = `${size}px`;
-    particle.style.height = `${size}px`;
-    particle.style.backgroundColor = color;
     particle.style.position = "absolute";
-    particle.style.borderRadius = "50%";
     particle.style.transform = `translate3d(${left}px, ${top}px, 0px)`;
+    particle.appendChild(svg);
 
     container.appendChild(particle);
 
     particles.push({
-      direction,
+      direction: Math.random() * 2 * Math.PI,
       element: particle,
       left,
       size,
@@ -91,12 +101,23 @@ const applyParticleEffect = (
   // Update existing particles' positions and other properties
   function refreshParticles() {
     particles.forEach((p) => {
-      p.left = p.left + p.speed * p.direction;
-      p.top = p.top + p.speed;
-      if (p.top >= window.innerHeight + p.size) {
+      const dx = p.speed * Math.cos(p.direction);
+      const dy = p.speed * Math.sin(p.direction);
+
+      p.left = p.left + dx;
+      p.top = p.top + dy;
+
+      // If particle is outside the viewport, remove it
+      if (
+        p.top > window.innerHeight ||
+        p.left > window.innerWidth ||
+        p.top < 0 ||
+        p.left < 0
+      ) {
         particles = particles.filter((o) => o !== p);
         p.element.remove();
       }
+
       p.element.setAttribute(
         "style",
         `position:absolute; will-change:transform; top:${p.top}px; left:${p.left}px;`
@@ -146,12 +167,16 @@ const applyParticleEffect = (
   element.addEventListener(move, updateMousePosition, { passive: true });
   element.addEventListener(tap, tapHandler, { passive: true });
   element.addEventListener(tapEnd, disableAutoAddParticle, { passive: true });
+  element.addEventListener("mouseleave", disableAutoAddParticle, {
+    passive: true,
+  });
 
   // Cleanup logic
   return () => {
     element.removeEventListener(move, updateMousePosition);
     element.removeEventListener(tap, tapHandler);
     element.removeEventListener(tapEnd, disableAutoAddParticle);
+    element.removeEventListener("mouseleave", disableAutoAddParticle);
 
     // Cancel animation loop once animations are done
     const interval = setInterval(() => {

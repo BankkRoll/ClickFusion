@@ -1,19 +1,26 @@
-// types.d.ts
-
-// Base Particle
+/**
+ * Base properties for all particles
+ */
 export interface BaseParticle {
   element: HTMLElement | SVGSVGElement;
   left: number;
   size: number;
   top: number;
 }
-// Base ParticleOptions
+
+/**
+ * Common options for particle effects
+ */
 export interface BaseParticleOptions {
+  /** Custom particle image URL */
   particle?: string;
+  /** Size of the particle */
   size?: number;
 }
 
-// Specific to CoolMode
+/**
+ * Properties specific to CoolMode
+ */
 export interface CoolParticle extends BaseParticle {
   direction: number;
   speedHorz: number;
@@ -21,38 +28,110 @@ export interface CoolParticle extends BaseParticle {
   spinSpeed: number;
   spinVal: number;
 }
-// Specific to CoolMode
+
+/**
+ * Options specific to CoolMode effect
+ */
 export interface CoolParticleOptions extends BaseParticleOptions {
+  /** Number of particles */
+  particleCount?: number;
+  /** Horizontal speed of particles */
   speedHorz?: number;
+  /** Upward speed of particles */
   speedUp?: number;
 }
 
-// Specific to RainingMode
+/**
+ * Properties specific to RainingMode
+ */
 export interface RainingParticle extends BaseParticle {
   speedDown: number;
 }
-// Specific to RainingMode
+
+/**
+ * Options specific to RainingMode effect
+ */
 export interface RainingParticleOptions extends BaseParticleOptions {
+  /** Downward speed of particles */
   speedDown?: number;
+  /** Number of particles */
   particleCount?: number;
 }
 
-// Specific to PartyMode
+/**
+ * Properties specific to PartyMode
+ */
 export interface PartyParticle extends BaseParticle {
   direction: number;
   speed: number;
 }
-// Specific to PartyMode
+
+/**
+ * Options specific to PartyMode effect
+ */
 export interface PartyParticleOptions extends BaseParticleOptions {
+  /** Number of particles */
   particleCount?: number;
 }
 
-// For EffectType
-export type EffectType = "coolmode" | "rainmode" | "partymode";
+/**
+ * Properties specific to ConfettiMode
+ */
+export interface ConfettiParticle extends BaseParticle {
+  speedDown: number;
+  color: string;
+}
 
-// For ClickFusionProps
+/**
+ * Options specific to ConfettiMode effect
+ */
+export interface ConfettiParticleOptions extends BaseParticleOptions {
+  /** Downward speed of particles */
+  speedDown?: number;
+  /** Number of particles */
+  particleCount?: number;
+  /** Color of particles, can be 'rainbow', 'red', 'orange', 'yellow', 'green', 'blue', 'purple' */
+  color?: "rainbow" | "red" | "orange" | "yellow" | "green" | "blue" | "purple";
+}
+
+/**
+ * Properties specific to CodeFall
+ */
+export interface CodeFallParticle extends BaseParticle {
+  speedDown: number;
+  color: "light" | "dark";
+}
+
+/**
+ *  Options specific to CodeFall effect
+ */
+export interface CodeFallParticleOptions extends BaseParticleOptions {
+  /** Downward speed of particles */
+  speedDown?: number;
+  /** Number of particles */
+  particleCount?: number;
+  /** Text color, can be 'light' or 'dark' */
+  color?: "light" | "dark";
+}
+
+/**
+ * Possible effect types
+ */
+export type EffectType =
+  | "coolmode"
+  | "rainmode"
+  | "partymode"
+  | "confettimode"
+  | "codemode";
+
+/**
+ * Props for the ClickFusion component
+ */
 export interface ClickFusionProps {
+  /** Type of effect to apply */
   effect: EffectType;
+  /** Options for particle behavior */
   particleOptions?: BaseParticleOptions;
+  /** Children to wrap the effect around */
   children: React.ReactNode;
 }

@@ -1,11 +1,19 @@
 # ClickFusion
 ![Version](https://img.shields.io/github/package-json/v/BankkRoll/ClickFusion)
-![Downloads](https://img.shields.io/npm/dw/clickfusion)
+![Downloads](https://img.shields.io/npm/dt/clickfusion)
 ![GitHub issues](https://img.shields.io/github/issues/BankkRoll/ClickFusion)
 ![GitHub pull requests](https://img.shields.io/github/issues-pr/BankkRoll/ClickFusion)
 ![License](https://img.shields.io/npm/l/clickfusion)
 
 Welcome to ClickFusion, your go-to library for interactive button effects! This npm package simplifies adding particle effects to your buttons or links, offering utility hooks and a React functional component to make your UI interactive and delightful.
+
+## Quick Links
+
+[![GitHub Package Repo](https://img.shields.io/badge/GitHub%20Package-ClickFusion-blue)](https://github.com/BankkRoll/ClickFusion)
+[![NPM Package](https://img.shields.io/badge/NPM%20Package-ClickFusion-blue)](https://www.npmjs.com/package/clickfusion)
+[![Live Docs Mintlify](https://img.shields.io/badge/Live%20Docs-ClickFusion-blue)](https://clickfusion.mintlify.app/)
+[![GitHub Docs Repo](https://img.shields.io/badge/GitHub%20Docs-ClickFusion-blue)](https://github.com/BankkRoll/ClickFusion-docs)
+
 
 ## Table of Contents
 
@@ -17,7 +25,6 @@ Welcome to ClickFusion, your go-to library for interactive button effects! This 
 - [Features](#features)
   - [Customizable Effects](#customizable-effects)
   - [Type Safety](#type-safety)
-- [Quick Links](#quick-links)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -25,39 +32,69 @@ Welcome to ClickFusion, your go-to library for interactive button effects! This 
 
 ### Installation
 
-You can install ClickFusion using various package managers:
+You can install ClickFusion using:
 
-```bash
-# Using npm
-npm i clickfusion
+  Using npm
+  
+  ```bash
+  npm i clickfusion
+  ```
+  
+  #### Running the Development Server
+  After installation, you can run your development server:
+  
+  ```bash
+  npm run dev
+  ```
+  
 
-# Using bun
-bun add clickfusion
+<details>
+  <summary>Using bun</summary>
+  
+  ```bash
+  bun add clickfusion
+  ```
+  
+  #### Running the Development Server
+  After installation, you can run your development server:
+  
+  ```bash
+  bun run dev
+  ```
+  
+</details>
 
-# Using yarn
-yarn add clickfusion
+<details>
+  <summary>Using yarn</summary>
+  
+  ```bash
+  yarn add clickfusion
+  ```
+  
+  #### Running the Development Server
+  After installation, you can run your development server:
+  
+  ```bash
+  yarn dev
+  ```
+  
+</details>
 
-# Using pnpm
-pnpm add clickfusion
-```
-
-### Running the Development Server
-
-After installation, you can run your development server:
-
-```bash
-# Using npm
-npm run dev
-
-# Using bun
-bun run dev
-
-# Using yarn
-yarn dev
-
-# Using pnpm
-pnpm dev
-```
+<details>
+  <summary>Using pnpm</summary>
+  
+  ```bash
+  pnpm add clickfusion
+  ```
+  
+  #### Running the Development Server
+  After installation, you can run your development server:
+  
+  ```bash
+  pnpm dev
+  ```
+  
+</details>
 
 This will usually start your development server on port 3000. Open [http://localhost:3000](http://localhost:3000) in your web browser to see your app.
 
@@ -66,7 +103,6 @@ This will usually start your development server on port 3000. Open [http://local
 Here's a simple example of how to use ClickFusion in your React application:
 
 ```tsx
-import React from 'react';
 import { ClickFusion } from 'clickfusion';
 
 export default function App() {
@@ -82,15 +118,10 @@ export default function App() {
 
 ## Comprehensive Example
 
-Below is an example that demonstrates the usage of all three effects (`coolmode`, `rainmode`, and `partymode`) with full property customization. This example assumes you have a function called `doSomething` that you want to execute when the button is clicked.
+Below is an example that demonstrates the usage of all three effects (`coolmode`, `rainmode`, `partymode`, `confettimode`, `codemode`) with full property customization.
 
 ```tsx
-import React from 'react';
-import ClickFusion from 'clickfusion';
-
-const doSomething = () => {
-  console.log('Button clicked!');
-};
+import { ClickFusion } from 'clickfusion';
 
 export default function App() {
   return (
@@ -99,13 +130,13 @@ export default function App() {
       <ClickFusion 
         effect="coolmode"
         particleOptions={{
-          particle: 'customParticleURL', // Optional
-          size: 40, // Optional
-          speedHorz: 5, // Optional
-          speedUp: 10 // Optional
+          particle: 'customParticleURL', // Optional: string
+          size: 40, // Optional: number
+          speedHorz: 5, // Optional: number
+          speedUp: 10 // Optional: number
         }}
       >
-        <button onClick={doSomething}>
+        <button>
           Click Me for Cool Effect!
         </button>
       </ClickFusion>
@@ -114,13 +145,13 @@ export default function App() {
       <ClickFusion
         effect="rainmode"
         particleOptions={{
-          particle: 'customParticleURL', // Optional
-          size: 50, // Optional
-          speedDown: 5, // Optional
-          particleCount: 30 // Optional
+          particle: 'customParticleURL', // Optional: string
+          size: 50, // Optional: number
+          speedDown: 5, // Optional: number
+          particleCount: 30 // Optional: number
         }}
       >
-        <button onClick={doSomething}>
+        <button>
           Click Me for Rain Effect!
         </button>
       </ClickFusion>
@@ -129,12 +160,40 @@ export default function App() {
       <ClickFusion
         effect="partymode"
         particleOptions={{
-          size: 20, // Optional
-          particleCount: 45 // Optional
+          size: 20, // Optional: number
+          particleCount: 45 // Optional: number
         }}
       >
-        <button onClick={doSomething}>
+        <button>
           Click Me for Party Effect!
+        </button>
+      </ClickFusion>
+
+      {/* Using confettimode effect */}
+      <ClickFusion 
+        effect="confettimode"
+        particleOptions={{
+          particleCount: 100, // Optional: number
+          speedDown: 5, // Optional: number
+          color: 'rainbow' // Optional: 'rainbow' | 'red' | 'orange' | 'yellow' | 'green' | 'blue' | 'purple'
+        }}
+      >
+        <button>
+          Click Me for Confetti Effect!
+        </button>
+      </ClickFusion>
+
+      {/* Using codemode effect */}
+      <ClickFusion 
+        effect="codemode"
+        particleOptions={{
+          particleCount: 30, // Optional: number
+          speedDown: 5, // Optional: number
+          color: 'light' // Optional: 'light' | 'dark'
+        }}
+      >
+        <button>
+          Click Me for Code Effect!
         </button>
       </ClickFusion>
     </div>
@@ -151,13 +210,6 @@ ClickFusion is highly customizable. Whether you're looking to change particle im
 ### Type Safety
 
 Our TypeScript support ensures a robust and type-safe development experience. [Learn More](././src/types.d.ts)
-
-## Quick Links
-
-- [ClickFusion GitHub Repository](https://github.com/BankkRoll/ClickFusion)
-- [ClickFusion on NPM](https://www.npmjs.com/package/clickfusion)
-- [Official Live Documentation](https://clickfusion.mintlify.app/)
-- [Documentation Source Code](https://github.com/BankkRoll/ClickFusion-docs)
 
 ## Contributing
 
