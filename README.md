@@ -1,6 +1,25 @@
 # ClickFusion
+![Version](https://img.shields.io/github/package-json/v/BankkRoll/ClickFusion)
+![Downloads](https://img.shields.io/npm/dw/clickfusion)
+![GitHub issues](https://img.shields.io/github/issues/BankkRoll/ClickFusion)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/BankkRoll/ClickFusion)
+![License](https://img.shields.io/npm/l/clickfusion)
 
 Welcome to ClickFusion, your go-to library for interactive button effects! This npm package simplifies adding particle effects to your buttons or links, offering utility hooks and a React functional component to make your UI interactive and delightful.
+
+## Table of Contents
+
+- [Setting up ClickFusion](#setting-up-clickfusion)
+  - [Installation](#installation)
+  - [Running the Development Server](#running-the-development-server)
+  - [Quick Example](#quick-example)
+- [Comprehensive Example](#comprehensive-example)
+- [Features](#features)
+  - [Customizable Effects](#customizable-effects)
+  - [Type Safety](#type-safety)
+- [Quick Links](#quick-links)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Setting up ClickFusion
 
@@ -133,23 +152,12 @@ ClickFusion is highly customizable. Whether you're looking to change particle im
 
 Our TypeScript support ensures a robust and type-safe development experience. [Learn More](/docs/development/types)
 
-### Project Directory
+## Quick Links
 
-```sql
-|-- src/
-| |-- index.ts
-| |-- types.d.ts
-| |-- components/
-| | |-- ClickFusion.tsx
-| |-- utils/
-| | |-- index.ts
-| | |-- coolMode.ts
-| | |-- rainMode.ts
-| | |-- partyMode.ts
-|-- README.md
-|-- package.json
-|-- tsconfig.json
-```
+- [ClickFusion GitHub Repository](https://github.com/BankkRoll/ClickFusion)
+- [ClickFusion on NPM](https://www.npmjs.com/package/clickfusion)
+- [Official Live Documentation](https://clickfusion.mintlify.app/)
+- [Documentation Source Code](https://github.com/BankkRoll/ClickFusion-docs)
 
 ## Contributing
 
