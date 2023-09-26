@@ -146,11 +146,11 @@ export default function App() {
 
 ### Customizable Effects
 
-ClickFusion is highly customizable. Whether you're looking to change particle images, sizes, or speeds, we've got you covered. [Learn More](/docs/settings/effects)
+ClickFusion is highly customizable. Whether you're looking to change particle images, sizes, or speeds, we've got you covered. [Learn More](https://clickfusion.mintlify.app/essentials/customEffects)
 
 ### Type Safety
 
-Our TypeScript support ensures a robust and type-safe development experience. [Learn More](/docs/development/types)
+Our TypeScript support ensures a robust and type-safe development experience. [Learn More](././src/types.d.ts)
 
 ## Quick Links
 
