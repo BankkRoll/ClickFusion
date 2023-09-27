@@ -13,11 +13,9 @@ export const useCodeModeEffect = (
   const ref: RefObject<HTMLButtonElement | HTMLAnchorElement> = useRef(null);
   const particles: CodeFallParticle[] = useRef([]).current;
 
-  const particleCount = options?.particleCount || 30;
-  const speed = options?.speedDown || 5;
-  const size = options?.size || 10;
+  const particleCount = options?.particleCount || 300;
+  const size = options?.size || 14;
 
-  // Function to remove all particles
   const cleanupParticles = () => {
     particles.forEach((p) => p.element.remove());
     particles.length = 0;
@@ -28,10 +26,9 @@ export const useCodeModeEffect = (
     const top = 0;
     const particle = document.createElement("div");
 
-    const textColor = options?.color === "light" ? "white" : "black";
+    const textColor = options?.color || "dark";
 
-    // Generate a random string of numbers to simulate code
-    const code = generateRandomCode(8);
+    const code = generateRandomCode(1);
 
     particle.textContent = code;
     particle.style.color = textColor;
@@ -40,16 +37,14 @@ export const useCodeModeEffect = (
     particle.style.position = "fixed";
     particle.style.top = `${top}px`;
     particle.style.left = `${left}px`;
-    particle.style.zIndex = "2147483647";
 
     document.body.appendChild(particle);
 
-    // Determine the color for this particle
-    const color = options?.color || "dark";
+    const speed = 3 + Math.random() * 5;
 
     particles.push({
       element: particle,
-      color,
+      color: textColor,
       left,
       size,
       speedDown: speed,
@@ -65,8 +60,7 @@ export const useCodeModeEffect = (
         particles.splice(index, 1);
       } else {
         p.element.style.transform = `translate3d(${p.left}px, ${p.top}px, 0)`;
-        // Change the code content to a new random string
-        p.element.textContent = generateRandomCode(8);
+        p.element.textContent = generateRandomCode(1);
       }
     });
   }, [particles]);
@@ -78,7 +72,7 @@ export const useCodeModeEffect = (
       if (particles.length >= particleCount) {
         clearInterval(intervalId);
       }
-    }, 100);
+    }, 10); // Faster generation
   }, [particleCount, particles]);
 
   useEffect(() => {
@@ -111,12 +105,9 @@ export const useCodeModeEffect = (
 
 // Function to generate a random code-like string
 function generateRandomCode(length: number) {
-  const characters =
-    "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const characters = "0123456789ABCDEF";
   let code = "";
-  for (let i = 0; i < length; i++) {
-    const randomIndex = Math.floor(Math.random() * characters.length);
-    code += characters.charAt(randomIndex);
-  }
+  const randomIndex = Math.floor(Math.random() * characters.length);
+  code = characters.charAt(randomIndex);
   return code;
 }

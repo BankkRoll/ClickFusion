@@ -6,9 +6,11 @@ var react_1 = require("react");
 var useConfettiModeEffect = function (effect, options) {
     var ref = (0, react_1.useRef)(null);
     var particles = (0, react_1.useRef)([]).current;
+    var particlePool = [];
     var particleCount = (options === null || options === void 0 ? void 0 : options.particleCount) || 100;
-    var speed = (options === null || options === void 0 ? void 0 : options.speedDown) || 5;
+    var speed = (options === null || options === void 0 ? void 0 : options.speedDown) || 6;
     var colorMode = (options === null || options === void 0 ? void 0 : options.color) || "rainbow";
+    var burstCount = 3;
     var colorMap = {
         rainbow: ["red", "orange", "yellow", "green", "blue", "purple"],
         red: ["red"],
@@ -19,37 +21,38 @@ var useConfettiModeEffect = function (effect, options) {
         purple: ["purple"],
     };
     var cleanupParticles = function () {
-        particles.forEach(function (p) { return p.element.remove(); });
+        particles.forEach(function (p) {
+            p.element.style.display = "none";
+            if (p.element instanceof HTMLElement) {
+                particlePool.push(p.element);
+            }
+        });
         particles.length = 0;
     };
     var generateParticle = function () {
+        var particle;
+        if (particlePool.length > 0) {
+            particle = particlePool.pop();
+            particle.style.display = "block";
+        }
+        else {
+            particle = document.createElement("div");
+            document.body.appendChild(particle);
+        }
         var left = Math.random() * window.innerWidth;
         var top = 0;
         var color = colorMap[colorMode][Math.floor(Math.random() * colorMap[colorMode].length)];
-        var shapes = ["circle", "rect", "triangle", "ellipse", "star", "hexagon"];
-        var shape = shapes[Math.floor(Math.random() * shapes.length)];
         var size = 5 + Math.random() * 7;
-        var particle = document.createElement("div");
+        var rotateX = Math.random() * 360;
+        var rotateY = Math.random() * 360;
+        var rotateZ = Math.random() * 360;
         particle.style.position = "fixed";
         particle.style.top = "".concat(top, "px");
         particle.style.left = "".concat(left, "px");
         particle.style.width = "".concat(size, "px");
         particle.style.height = "".concat(size, "px");
         particle.style.backgroundColor = color;
-        var shapeStyles = {
-            circle: { borderRadius: "50%" },
-            rect: {},
-            triangle: { clipPath: "polygon(50% 0%, 0% 100%, 100% 100%)" },
-            ellipse: { borderRadius: "50% 25%" },
-            star: {
-                clipPath: "polygon(50% 0%, 61.8% 38.2%, 98.1% 38.2%, 68.4% 61.8%, 79.4% 95.1%, 50% 76.2%, 20.6% 95.1%, 31.6% 61.8%, 1.9% 38.2%, 38.2% 38.2%)",
-            },
-            hexagon: {
-                clipPath: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
-            },
-        };
-        Object.assign(particle.style, shapeStyles[shape]);
-        document.body.appendChild(particle);
+        particle.style.willChange = "transform";
         particles.push({
             element: particle,
             left: left,
@@ -57,29 +60,42 @@ var useConfettiModeEffect = function (effect, options) {
             speedDown: speed,
             top: top,
             color: color,
+            rotateX: rotateX,
+            rotateY: rotateY,
+            rotateZ: rotateZ,
         });
     };
     var refreshParticles = (0, react_1.useCallback)(function () {
         particles.forEach(function (p, index) {
             p.top += p.speedDown;
+            p.rotateX += 3;
+            p.rotateY += 3;
+            p.rotateZ += 3;
             if (p.top > window.innerHeight) {
-                p.element.remove();
+                p.element.style.display = "none";
+                if (p.element instanceof HTMLElement) {
+                    particlePool.push(p.element);
+                }
                 particles.splice(index, 1);
             }
             else {
-                p.element.style.transform = "translate3d(".concat(p.left, "px, ").concat(p.top, "px, 0)");
+                p.element.style.transform = "translate3d(".concat(p.left, "px, ").concat(p.top, "px, 0) rotateX(").concat(p.rotateX, "deg) rotateY(").concat(p.rotateY, "deg) rotateZ(").concat(p.rotateZ, "deg)");
             }
         });
     }, [particles]);
     var handleClick = (0, react_1.useCallback)(function () {
         cleanupParticles();
-        var intervalId = setInterval(function () {
-            generateParticle();
-            if (particles.length >= particleCount) {
-                clearInterval(intervalId);
+        var generatedCount = 0;
+        var burstIntervalId = setInterval(function () {
+            for (var i = 0; i < burstCount; i++) {
+                generateParticle();
+                generatedCount++;
             }
-        }, 100);
-    }, [particleCount, particles]);
+            if (generatedCount >= particleCount) {
+                clearInterval(burstIntervalId);
+            }
+        }, 60);
+    }, [particleCount, burstCount]);
     (0, react_1.useEffect)(function () {
         if (typeof document === "undefined")
             return;

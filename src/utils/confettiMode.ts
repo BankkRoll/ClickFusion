@@ -12,10 +12,12 @@ export const useConfettiModeEffect = (
 ) => {
   const ref: RefObject<HTMLButtonElement | HTMLAnchorElement> = useRef(null);
   const particles: ConfettiParticle[] = useRef([]).current;
+  const particlePool: HTMLElement[] = [];
 
   const particleCount = options?.particleCount || 100;
-  const speed = options?.speedDown || 5;
+  const speed = options?.speedDown || 6;
   const colorMode = options?.color || "rainbow";
+  const burstCount = 3;
 
   const colorMap = {
     rainbow: ["red", "orange", "yellow", "green", "blue", "purple"],
@@ -28,47 +30,43 @@ export const useConfettiModeEffect = (
   };
 
   const cleanupParticles = () => {
-    particles.forEach((p) => p.element.remove());
+    particles.forEach((p) => {
+      p.element.style.display = "none";
+      if (p.element instanceof HTMLElement) {
+        particlePool.push(p.element);
+      }
+    });
     particles.length = 0;
   };
 
   const generateParticle = () => {
+    let particle: HTMLElement;
+    if (particlePool.length > 0) {
+      particle = particlePool.pop()!;
+      particle.style.display = "block";
+    } else {
+      particle = document.createElement("div");
+      document.body.appendChild(particle);
+    }
+
     const left = Math.random() * window.innerWidth;
     const top = 0;
     const color =
       colorMap[colorMode][
         Math.floor(Math.random() * colorMap[colorMode].length)
       ];
-    const shapes = ["circle", "rect", "triangle", "ellipse", "star", "hexagon"];
-    const shape = shapes[Math.floor(Math.random() * shapes.length)];
     const size = 5 + Math.random() * 7;
+    const rotateX = Math.random() * 360;
+    const rotateY = Math.random() * 360;
+    const rotateZ = Math.random() * 360;
 
-    const particle = document.createElement("div");
     particle.style.position = "fixed";
     particle.style.top = `${top}px`;
     particle.style.left = `${left}px`;
     particle.style.width = `${size}px`;
     particle.style.height = `${size}px`;
     particle.style.backgroundColor = color;
-
-    const shapeStyles: { [key: string]: Partial<CSSStyleDeclaration> } = {
-      circle: { borderRadius: "50%" },
-      rect: {},
-      triangle: { clipPath: "polygon(50% 0%, 0% 100%, 100% 100%)" },
-      ellipse: { borderRadius: "50% 25%" },
-      star: {
-        clipPath:
-          "polygon(50% 0%, 61.8% 38.2%, 98.1% 38.2%, 68.4% 61.8%, 79.4% 95.1%, 50% 76.2%, 20.6% 95.1%, 31.6% 61.8%, 1.9% 38.2%, 38.2% 38.2%)",
-      },
-      hexagon: {
-        clipPath:
-          "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
-      },
-    };
-
-    Object.assign(particle.style, shapeStyles[shape]);
-
-    document.body.appendChild(particle);
+    particle.style.willChange = "transform";
 
     particles.push({
       element: particle,
@@ -77,34 +75,47 @@ export const useConfettiModeEffect = (
       speedDown: speed,
       top,
       color,
+      rotateX,
+      rotateY,
+      rotateZ,
     });
   };
 
   const refreshParticles = useCallback(() => {
     particles.forEach((p, index) => {
       p.top += p.speedDown;
+      p.rotateX += 3;
+      p.rotateY += 3;
+      p.rotateZ += 3;
+
       if (p.top > window.innerHeight) {
-        p.element.remove();
+        p.element.style.display = "none";
+        if (p.element instanceof HTMLElement) {
+          particlePool.push(p.element);
+        }
         particles.splice(index, 1);
       } else {
-        p.element.style.transform = `translate3d(${p.left}px, ${p.top}px, 0)`;
+        p.element.style.transform = `translate3d(${p.left}px, ${p.top}px, 0) rotateX(${p.rotateX}deg) rotateY(${p.rotateY}deg) rotateZ(${p.rotateZ}deg)`;
       }
     });
   }, [particles]);
 
   const handleClick = useCallback(() => {
     cleanupParticles();
-    let intervalId = setInterval(() => {
-      generateParticle();
-      if (particles.length >= particleCount) {
-        clearInterval(intervalId);
+    let generatedCount = 0;
+    let burstIntervalId = setInterval(() => {
+      for (let i = 0; i < burstCount; i++) {
+        generateParticle();
+        generatedCount++;
       }
-    }, 100);
-  }, [particleCount, particles]);
+      if (generatedCount >= particleCount) {
+        clearInterval(burstIntervalId);
+      }
+    }, 60);
+  }, [particleCount, burstCount]);
 
   useEffect(() => {
     if (typeof document === "undefined") return;
-
     let animationFrame: number;
 
     const loop = () => {

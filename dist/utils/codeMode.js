@@ -6,10 +6,8 @@ var react_1 = require("react");
 var useCodeModeEffect = function (effect, options) {
     var ref = (0, react_1.useRef)(null);
     var particles = (0, react_1.useRef)([]).current;
-    var particleCount = (options === null || options === void 0 ? void 0 : options.particleCount) || 30;
-    var speed = (options === null || options === void 0 ? void 0 : options.speedDown) || 5;
-    var size = (options === null || options === void 0 ? void 0 : options.size) || 10;
-    // Function to remove all particles
+    var particleCount = (options === null || options === void 0 ? void 0 : options.particleCount) || 300;
+    var size = (options === null || options === void 0 ? void 0 : options.size) || 14;
     var cleanupParticles = function () {
         particles.forEach(function (p) { return p.element.remove(); });
         particles.length = 0;
@@ -18,9 +16,8 @@ var useCodeModeEffect = function (effect, options) {
         var left = Math.random() * window.innerWidth;
         var top = 0;
         var particle = document.createElement("div");
-        var textColor = (options === null || options === void 0 ? void 0 : options.color) === "light" ? "white" : "black";
-        // Generate a random string of numbers to simulate code
-        var code = generateRandomCode(8);
+        var textColor = (options === null || options === void 0 ? void 0 : options.color) || "dark";
+        var code = generateRandomCode(1);
         particle.textContent = code;
         particle.style.color = textColor;
         particle.style.fontWeight = "bold";
@@ -28,13 +25,11 @@ var useCodeModeEffect = function (effect, options) {
         particle.style.position = "fixed";
         particle.style.top = "".concat(top, "px");
         particle.style.left = "".concat(left, "px");
-        particle.style.zIndex = "2147483647";
         document.body.appendChild(particle);
-        // Determine the color for this particle
-        var color = (options === null || options === void 0 ? void 0 : options.color) || "dark";
+        var speed = 3 + Math.random() * 5;
         particles.push({
             element: particle,
-            color: color,
+            color: textColor,
             left: left,
             size: size,
             speedDown: speed,
@@ -50,8 +45,7 @@ var useCodeModeEffect = function (effect, options) {
             }
             else {
                 p.element.style.transform = "translate3d(".concat(p.left, "px, ").concat(p.top, "px, 0)");
-                // Change the code content to a new random string
-                p.element.textContent = generateRandomCode(8);
+                p.element.textContent = generateRandomCode(1);
             }
         });
     }, [particles]);
@@ -62,7 +56,7 @@ var useCodeModeEffect = function (effect, options) {
             if (particles.length >= particleCount) {
                 clearInterval(intervalId);
             }
-        }, 100);
+        }, 10); // Faster generation
     }, [particleCount, particles]);
     (0, react_1.useEffect)(function () {
         // Skip server-side rendering
@@ -90,11 +84,9 @@ var useCodeModeEffect = function (effect, options) {
 exports.useCodeModeEffect = useCodeModeEffect;
 // Function to generate a random code-like string
 function generateRandomCode(length) {
-    var characters = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    var characters = "0123456789ABCDEF";
     var code = "";
-    for (var i = 0; i < length; i++) {
-        var randomIndex = Math.floor(Math.random() * characters.length);
-        code += characters.charAt(randomIndex);
-    }
+    var randomIndex = Math.floor(Math.random() * characters.length);
+    code = characters.charAt(randomIndex);
     return code;
 }

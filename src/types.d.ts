@@ -80,6 +80,9 @@ export interface PartyParticleOptions extends BaseParticleOptions {
 export interface ConfettiParticle extends BaseParticle {
   speedDown: number;
   color: string;
+  rotateX: number;
+  rotateY: number;
+  rotateZ: number;
 }
 
 /**
@@ -115,6 +118,18 @@ export interface CodeFallParticleOptions extends BaseParticleOptions {
 }
 
 /**
+ * Options specific to DragMode effect
+ */
+export interface DragParticleOptions extends BaseParticleOptions {
+  /** Width of the draggable canvas */
+  width?: number;
+  /** Height of the draggable canvas */
+  height?: number;
+  /** Color of the draggable canvas, can be 'light' or 'dark' */
+  color?: "light" | "dark";
+}
+
+/**
  * Possible effect types
  */
 export type EffectType =
@@ -122,7 +137,8 @@ export type EffectType =
   | "rainmode"
   | "partymode"
   | "confettimode"
-  | "codemode";
+  | "codemode"
+  | "dragmode";
 
 /**
  * Props for the ClickFusion component

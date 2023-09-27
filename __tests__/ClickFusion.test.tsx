@@ -6,7 +6,7 @@ import { EffectType } from '../src/types';
 import userEvent from '@testing-library/user-event';
 
 // Define the effects
-const effects: EffectType[] = ['coolmode', 'rainmode', 'partymode', 'confettimode', 'codemode'];
+const effects: EffectType[] = ['coolmode', 'rainmode', 'partymode', 'confettimode', 'codemode', 'dragmode'];
 
 // Define different types of children
 const children = [

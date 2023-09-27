@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.useCodeModeEffect = exports.useConfettiModeEffect = exports.useRainModeEffect = exports.usePartyModeEffect = exports.useCoolModeEffect = void 0;
+exports.useDragModeEffect = exports.useCodeModeEffect = exports.useConfettiModeEffect = exports.useRainModeEffect = exports.usePartyModeEffect = exports.useCoolModeEffect = void 0;
 // src/utils/index.ts
 var coolMode_1 = require("./coolMode");
 Object.defineProperty(exports, "useCoolModeEffect", { enumerable: true, get: function () { return coolMode_1.useCoolModeEffect; } });
@@ -12,3 +12,5 @@ var confettiMode_1 = require("./confettiMode");
 Object.defineProperty(exports, "useConfettiModeEffect", { enumerable: true, get: function () { return confettiMode_1.useConfettiModeEffect; } });
 var codeMode_1 = require("./codeMode");
 Object.defineProperty(exports, "useCodeModeEffect", { enumerable: true, get: function () { return codeMode_1.useCodeModeEffect; } });
+var dragMode_1 = require("./dragMode");
+Object.defineProperty(exports, "useDragModeEffect", { enumerable: true, get: function () { return dragMode_1.useDragModeEffect; } });

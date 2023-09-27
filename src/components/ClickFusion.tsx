@@ -1,8 +1,14 @@
 // src/components/ClickFusion.tsx
 import React, { ReactElement, cloneElement, ReactNode } from 'react';
-import { useCoolModeEffect, useRainModeEffect, usePartyModeEffect, useConfettiModeEffect } from '../utils';
 import { ClickFusionProps } from '../types';
-import { useCodeModeEffect } from '../utils/codeMode';
+import {
+  useCoolModeEffect,
+  useRainModeEffect,
+  usePartyModeEffect,
+  useConfettiModeEffect,
+  useCodeModeEffect,
+  useDragModeEffect,
+} from "../utils";
 
 // Mapping effect names to their corresponding hooks
 const effectToHookMap = {
@@ -10,7 +16,8 @@ const effectToHookMap = {
   'rainmode': useRainModeEffect,
   'partymode': usePartyModeEffect,
   'confettimode': useConfettiModeEffect,
-  'codemode': useCodeModeEffect
+  'codemode': useCodeModeEffect,
+  'dragmode': useDragModeEffect
 };
 
 /**

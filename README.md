@@ -5,7 +5,7 @@
 ![GitHub pull requests](https://img.shields.io/github/issues-pr/BankkRoll/ClickFusion)
 ![License](https://img.shields.io/npm/l/clickfusion)
 
-Welcome to ClickFusion, your go-to library for interactive button effects! This npm package simplifies adding particle effects to your buttons or links, offering utility hooks and a React functional component to make your UI interactive and delightful.
+Welcome to ClickFusion, your go-to library for interactive button effects! This npm package simplifies adding particle effects to your buttons, links, divs or other DOMs. Offering a React functional component to make your UI interactive and delightful.
 
 ## Quick Links
 
@@ -118,7 +118,7 @@ export default function App() {
 
 ## Comprehensive Example
 
-Below is an example that demonstrates the usage of all three effects (`coolmode`, `rainmode`, `partymode`, `confettimode`, `codemode`) with full property customization.
+Below is an example that demonstrates the usage of all three effects (`coolmode`, `rainmode`, `partymode`, `confettimode`, `codemode`, `dragmode`) with full property customization.
 
 ```tsx
 import { ClickFusion } from 'clickfusion';
@@ -173,7 +173,7 @@ export default function App() {
       <ClickFusion 
         effect="confettimode"
         particleOptions={{
-          particleCount: 100, // Optional: number
+          particleCount: 200, // Optional: number
           speedDown: 5, // Optional: number
           color: 'rainbow' // Optional: 'rainbow' | 'red' | 'orange' | 'yellow' | 'green' | 'blue' | 'purple'
         }}
@@ -194,6 +194,20 @@ export default function App() {
       >
         <button>
           Click Me for Code Effect!
+        </button>
+      </ClickFusion>
+
+      {/* Using dragmode effect */}
+      <ClickFusion 
+        effect="dragmode"
+        particleOptions={{
+          width: 500, // Optional: number
+          height: 300, // Optional: number
+          color: 'dark' // Optional: 'light' | 'dark' Transparent by default
+        }}
+      >
+        <button>
+          Click Me for Drag Effect!
         </button>
       </ClickFusion>
     </div>

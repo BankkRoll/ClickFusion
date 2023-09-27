@@ -1,11 +1,11 @@
 {
   "name": "clickfusion",
-  "version": "0.1.46",
+  "version": "0.1.56",
   "description": "Easy click fusion DOM effects with multiple styles and effects.",
   "main": "dist/index.js",
   "types": "dist/types/index.d.ts",
   "scripts": {
-    "test": "jest --config=jest.config.js --verbose > __tests__/test-output.log 2>&1",
+    "test": "jest --config=jest.config.js > __tests__/test-output.log 2>&1",
     "format": "prettier --write \"src/**/*.ts\"",
     "build": "tsc",
     "prepublishOnly": "npm run build && npm run format"
@@ -29,6 +29,7 @@
   "author": "bankkroll",
   "license": "MIT",
   "dependencies": {
+    "canvas": "^2.11.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

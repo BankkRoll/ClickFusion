@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event';
 import { ClickFusion } from '../dist';
 
 // Define the effects
-const effects = ['coolmode', 'rainmode', 'partymode', 'confettimode', 'codemode'];
+const effects = ['coolmode', 'rainmode', 'partymode', 'confettimode', 'codemode', 'dragmode'];
 
 // Define different types of children
 const children = [

@@ -26,14 +26,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // src/components/ClickFusion.tsx
 var react_1 = __importStar(require("react"));
 var utils_1 = require("../utils");
-var codeMode_1 = require("../utils/codeMode");
 // Mapping effect names to their corresponding hooks
 var effectToHookMap = {
     'coolmode': utils_1.useCoolModeEffect,
     'rainmode': utils_1.useRainModeEffect,
     'partymode': utils_1.usePartyModeEffect,
     'confettimode': utils_1.useConfettiModeEffect,
-    'codemode': codeMode_1.useCodeModeEffect
+    'codemode': utils_1.useCodeModeEffect,
+    'dragmode': utils_1.useDragModeEffect
 };
 /**
  * ClickFusion Component
