@@ -1,4 +1,3 @@
-// src/components/ClickFusion.tsx
 import React, { ReactElement, cloneElement, ReactNode } from 'react';
 import { ClickFusionProps } from '../types';
 import {
@@ -10,23 +9,13 @@ import {
   useDragModeEffect,
 } from "../utils";
 
-// Mapping effect names to their corresponding hooks
-const effectToHookMap = {
-  'coolmode': useCoolModeEffect,
-  'rainmode': useRainModeEffect,
-  'partymode': usePartyModeEffect,
-  'confettimode': useConfettiModeEffect,
-  'codemode': useCodeModeEffect,
-  'dragmode': useDragModeEffect
-};
-
 /**
  * ClickFusion Component
  *
  * This component is responsible for rendering particle effects around a single child element.
  *
  * @param {ClickFusionProps} props - The props that define the type of particle effect to use and its options.
- * @param {string} props.effect - The type of particle effect to use ('coolmode', 'rainmode', 'partymode', 'confettimode', 'codemode').
+ * @param {string} props.effect - The type of particle effect to use ('coolmode', 'rainmode', 'partymode', 'confettimode', 'codemode', 'dragmode').
  * @param {BaseParticleOptions | undefined} props.particleOptions - The options for customizing particle behavior.
  * @param {ReactNode} props.children - The child element around which the particle effect will be rendered.
  * 
@@ -35,18 +24,34 @@ const effectToHookMap = {
 const ClickFusion: React.FC<ClickFusionProps> = ({ effect, particleOptions, children }) => {
   let output: ReactNode = children;
 
-  // Retrieve the appropriate hook dynamically based on the effect
-  const useEffectHook = effectToHookMap[effect];
-  if (!useEffectHook) {
+  // Always call all hooks, even if not all are used
+  const coolModeRef = useCoolModeEffect(effect, particleOptions);
+  const rainModeRef = useRainModeEffect(effect, particleOptions);
+  const partyModeRef = usePartyModeEffect(effect, particleOptions);
+  const confettiModeRef = useConfettiModeEffect(effect, particleOptions);
+  const codeModeRef = useCodeModeEffect(effect, particleOptions);
+  const dragModeRef = useDragModeEffect(effect, particleOptions);
+
+  // Choose the correct ref based on the effect
+  const refs = {
+    'coolmode': coolModeRef,
+    'rainmode': rainModeRef,
+    'partymode': partyModeRef,
+    'confettimode': confettiModeRef,
+    'codemode': codeModeRef,
+    'dragmode': dragModeRef
+  };
+
+  const activeRef = refs[effect] || null;
+
+  if (!activeRef) {
     console.error(`Unsupported effect "${effect}"`);
     return null;
   }
 
-  const ref = useEffectHook(effect, particleOptions);
-
   // Clone the child and attach ref
   const child = React.Children.only(children) as ReactElement;
-  output = cloneElement(child, { ref });
+  output = cloneElement(child, { ref: activeRef });
 
   return (
     <div className={`click-fusion ${effect}`}>

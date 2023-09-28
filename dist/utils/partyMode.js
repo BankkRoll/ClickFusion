@@ -39,7 +39,7 @@ var applyParticleEffect = function (element, options) {
     var container = getContainer();
     // Function to generate a single particle
     function generateParticle() {
-        var size = (options === null || options === void 0 ? void 0 : options.size) || 2 + Math.random() * 4;
+        var size = (options === null || options === void 0 ? void 0 : options.size) || 2 + Math.random() * 6;
         var top = mouseY - size / 2;
         var left = mouseX - size / 2;
         var direction = Math.random() <= 0.5 ? -1 : 1;

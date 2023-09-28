@@ -13,7 +13,7 @@ export const useCodeModeEffect = (
   const ref: RefObject<HTMLButtonElement | HTMLAnchorElement> = useRef(null);
   const particles: CodeFallParticle[] = useRef([]).current;
 
-  const particleCount = options?.particleCount || 300;
+  const particleCount = options?.particleCount || 150;
   const size = options?.size || 14;
 
   const cleanupParticles = () => {

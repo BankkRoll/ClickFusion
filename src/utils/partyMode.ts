@@ -59,7 +59,7 @@ const applyParticleEffect = (
 
   // Function to generate a single particle
   function generateParticle() {
-    const size = options?.size || 2 + Math.random() * 4;
+    const size = options?.size || 2 + Math.random() * 6;
     const top = mouseY - size / 2;
     const left = mouseX - size / 2;
     const direction = Math.random() <= 0.5 ? -1 : 1;

@@ -8,31 +8,28 @@ export const useDragModeEffect = (
 ) => {
   const ref: RefObject<HTMLElement | null> = useRef(null);
 
-  const updateCanvasPosition = (
-    canvas: HTMLCanvasElement,
-    element: HTMLElement
-  ) => {
-    const rect = element.getBoundingClientRect();
-    canvas.style.left = `${rect.left}px`;
-    canvas.style.top = `${rect.top}px`;
-  };
-
   useEffect(() => {
     const element = ref.current;
     if (!element || effect !== "dragmode") return;
 
+    const parent = element.parentElement;
+    if (!parent) return;
+
+    // Set parent to relative positioning
+    parent.style.position = "relative";
+
     // Create canvas
     const canvas = document.createElement("canvas");
-    const canvasWidth = options?.width ?? 400;
-    const canvasHeight = options?.height ?? 400;
-    canvas.width = canvasWidth;
-    canvas.height = canvasHeight;
+    const rect = element.getBoundingClientRect();
+    canvas.width = rect.width;
+    canvas.height = rect.height;
 
     // Initialize canvas position
-    updateCanvasPosition(canvas, element);
+    canvas.style.position = "absolute";
+    canvas.style.left = "0";
+    canvas.style.top = "0";
 
-    // Set styles and positions for canvas
-    canvas.style.position = "relative";
+    // Set styles for canvas
     canvas.style.zIndex = "-1";
 
     if (options?.color === "light") {
@@ -43,9 +40,9 @@ export const useDragModeEffect = (
       canvas.style.opacity = "0";
     }
 
-    document.body.appendChild(canvas);
+    parent.appendChild(canvas);
 
-    element.style.position = "relative";
+    element.style.position = "absolute";
     element.style.zIndex = "1";
     element.style.cursor = "grab";
 
@@ -56,22 +53,23 @@ export const useDragModeEffect = (
     const startDrag = (e: MouseEvent | TouchEvent) => {
       isDragging = true;
       element.style.cursor = "grabbing";
-      const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
-      const clientY = "touches" in e ? e.touches[0].clientY : e.clientY;
-      offsetX = clientX - element.getBoundingClientRect().left;
-      offsetY = clientY - element.getBoundingClientRect().top;
+      const pageX = "touches" in e ? e.touches[0].pageX : e.pageX;
+      const pageY = "touches" in e ? e.touches[0].pageY : e.pageY;
+      const rect = element.getBoundingClientRect();
+      offsetX = pageX - (rect.left + window.scrollX);
+      offsetY = pageY - (rect.top + window.scrollY);
     };
 
     const doDrag = (e: MouseEvent | TouchEvent) => {
       if (!isDragging) return;
-      const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
-      const clientY = "touches" in e ? e.touches[0].clientY : e.clientY;
-      const x = clientX - offsetX;
-      const y = clientY - offsetY;
+      const pageX = "touches" in e ? e.touches[0].pageX : e.pageX;
+      const pageY = "touches" in e ? e.touches[0].pageY : e.pageY;
+      const x = pageX - offsetX;
+      const y = pageY - offsetY;
 
       requestAnimationFrame(() => {
-        element.style.left = `${x}px`;
-        element.style.top = `${y}px`;
+        element.style.left = `${x - window.scrollX}px`;
+        element.style.top = `${y - window.scrollY}px`;
       });
     };
 
@@ -79,10 +77,6 @@ export const useDragModeEffect = (
       isDragging = false;
       element.style.cursor = "grab";
     };
-
-    const handleScrollOrResize = () => updateCanvasPosition(canvas, element);
-    window.addEventListener("scroll", handleScrollOrResize);
-    window.addEventListener("resize", handleScrollOrResize);
 
     element.addEventListener("mousedown", startDrag);
     element.addEventListener("touchstart", startDrag);
@@ -99,11 +93,8 @@ export const useDragModeEffect = (
       window.removeEventListener("touchmove", doDrag);
       window.removeEventListener("mouseup", stopDrag);
       window.removeEventListener("touchend", stopDrag);
-      window.removeEventListener("scroll", handleScrollOrResize);
-      window.removeEventListener("resize", handleScrollOrResize);
-
       // Remove canvas
-      document.body.removeChild(canvas);
+      parent.removeChild(canvas);
     };
   }, [effect, options]);
 

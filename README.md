@@ -201,7 +201,7 @@ export default function App() {
       <ClickFusion 
         effect="dragmode"
         particleOptions={{
-          width: 500, // Optional: number
+          width: 300, // Optional: number
           height: 300, // Optional: number
           color: 'dark' // Optional: 'light' | 'dark' Transparent by default
         }}

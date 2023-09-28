@@ -121,11 +121,7 @@ export interface CodeFallParticleOptions extends BaseParticleOptions {
  * Options specific to DragMode effect
  */
 export interface DragParticleOptions extends BaseParticleOptions {
-  /** Width of the draggable canvas */
-  width?: number;
-  /** Height of the draggable canvas */
-  height?: number;
-  /** Color of the draggable canvas, can be 'light' or 'dark' */
+  /** Color of the draggable canvas, can be 'light' or 'dark' or transparent by default */
   color?: "light" | "dark";
 }
 

@@ -6,7 +6,7 @@ var react_1 = require("react");
 var useCodeModeEffect = function (effect, options) {
     var ref = (0, react_1.useRef)(null);
     var particles = (0, react_1.useRef)([]).current;
-    var particleCount = (options === null || options === void 0 ? void 0 : options.particleCount) || 300;
+    var particleCount = (options === null || options === void 0 ? void 0 : options.particleCount) || 150;
     var size = (options === null || options === void 0 ? void 0 : options.size) || 14;
     var cleanupParticles = function () {
         particles.forEach(function (p) { return p.element.remove(); });
