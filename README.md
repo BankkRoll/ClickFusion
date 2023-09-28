@@ -1,9 +1,9 @@
 # ClickFusion
-![Version](https://img.shields.io/github/package-json/v/BankkRoll/ClickFusion)
-![Downloads](https://img.shields.io/npm/dt/clickfusion)
-![GitHub issues](https://img.shields.io/github/issues/BankkRoll/ClickFusion)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/BankkRoll/ClickFusion)
-![License](https://img.shields.io/npm/l/clickfusion)
+![Version](https://img.shields.io/npm/v/clickfusion?style=plastic&logo=npm&cacheSeconds=3600&link=https%3A%2F%2Fwww.npmjs.com%2Fpackage%2Fclickfusion)
+![Downloads](https://img.shields.io/npm/dt/clickfusion?style=plastic)
+![GitHub issues](https://img.shields.io/github/issues/BankkRoll/ClickFusion?style=plastic)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/BankkRoll/ClickFusion?style=plastic)
+![License](https://img.shields.io/npm/l/clickfusion?style=plastic)
 
 Welcome to ClickFusion, your go-to library for interactive button effects! This npm package simplifies adding particle effects to your buttons, links, divs or other DOMs. Offering a React functional component to make your UI interactive and delightful.
 
