@@ -1,6 +1,6 @@
 {
   "name": "clickfusion",
-  "version": "0.1.64",
+  "version": "0.1.7",
   "description": "Easy click fusion DOM effects with multiple styles and effects.",
   "main": "dist/index.js",
   "types": "dist/types/index.d.ts",

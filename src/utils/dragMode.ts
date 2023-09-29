@@ -12,39 +12,35 @@ export const useDragModeEffect = (
     const element = ref.current;
     if (!element || effect !== "dragmode") return;
 
-    const parent = element.parentElement;
-    if (!parent) return;
-
-    // Set parent to relative positioning
-    parent.style.position = "relative";
-
-    // Create canvas
-    const canvas = document.createElement("canvas");
+    // Get initial position
     const rect = element.getBoundingClientRect();
-    canvas.width = rect.width;
-    canvas.height = rect.height;
+    const initialLeft = rect.left;
+    const initialTop = rect.top;
 
-    // Initialize canvas position
-    canvas.style.position = "absolute";
+    // Create Canvas for Background
+    const canvas = document.createElement("div");
+    canvas.style.position = "fixed";
     canvas.style.left = "0";
     canvas.style.top = "0";
-
-    // Set styles for canvas
+    canvas.style.width = "100%";
+    canvas.style.height = "100%";
     canvas.style.zIndex = "-1";
+    canvas.style.backgroundColor =
+      options?.color === "light"
+        ? "rgba(255, 255, 255, 0.7)"
+        : options?.color === "dark"
+        ? "rgba(0, 0, 0, 0.7)"
+        : "transparent";
+    document.body.appendChild(canvas);
 
-    if (options?.color === "light") {
-      canvas.style.backgroundColor = "rgba(255, 255, 255, 0.7)";
-    } else if (options?.color === "dark") {
-      canvas.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
-    } else {
-      canvas.style.opacity = "0";
-    }
-
-    parent.appendChild(canvas);
-
-    element.style.position = "absolute";
-    element.style.zIndex = "1";
-    element.style.cursor = "grab";
+    // Preserve initial styles
+    const originalStyle = {
+      position: element.style.position,
+      left: element.style.left,
+      top: element.style.top,
+      zIndex: element.style.zIndex,
+      cursor: element.style.cursor,
+    };
 
     let isDragging = false;
     let offsetX = 0,
@@ -52,25 +48,28 @@ export const useDragModeEffect = (
 
     const startDrag = (e: MouseEvent | TouchEvent) => {
       isDragging = true;
+      const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
+      const clientY = "touches" in e ? e.touches[0].clientY : e.clientY;
+      offsetX = clientX - initialLeft;
+      offsetY = clientY - initialTop;
       element.style.cursor = "grabbing";
-      const pageX = "touches" in e ? e.touches[0].pageX : e.pageX;
-      const pageY = "touches" in e ? e.touches[0].pageY : e.pageY;
-      const rect = element.getBoundingClientRect();
-      offsetX = pageX - (rect.left + window.scrollX);
-      offsetY = pageY - (rect.top + window.scrollY);
     };
 
     const doDrag = (e: MouseEvent | TouchEvent) => {
       if (!isDragging) return;
-      const pageX = "touches" in e ? e.touches[0].pageX : e.pageX;
-      const pageY = "touches" in e ? e.touches[0].pageY : e.pageY;
-      const x = pageX - offsetX;
-      const y = pageY - offsetY;
+      const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
+      const clientY = "touches" in e ? e.touches[0].clientY : e.clientY;
+      const x = clientX - offsetX;
+      const y = clientY - offsetY;
 
-      requestAnimationFrame(() => {
-        element.style.left = `${x - window.scrollX}px`;
-        element.style.top = `${y - window.scrollY}px`;
-      });
+      const maxBoundX = options?.maxWidth || window.innerWidth;
+      const maxBoundY = options?.maxHeight || window.innerHeight;
+
+      const boundedX = Math.min(Math.max(0, x), maxBoundX);
+      const boundedY = Math.min(Math.max(0, y), maxBoundY);
+
+      element.style.left = `${boundedX}px`;
+      element.style.top = `${boundedY}px`;
     };
 
     const stopDrag = () => {
@@ -78,6 +77,10 @@ export const useDragModeEffect = (
       element.style.cursor = "grab";
     };
 
+    element.style.position = "fixed";
+    element.style.left = `${initialLeft}px`;
+    element.style.top = `${initialTop}px`;
+    element.style.cursor = "grab";
     element.addEventListener("mousedown", startDrag);
     element.addEventListener("touchstart", startDrag);
     window.addEventListener("mousemove", doDrag);
@@ -86,15 +89,15 @@ export const useDragModeEffect = (
     window.addEventListener("touchend", stopDrag);
 
     return () => {
-      // Remove event listeners and cleanup
       element.removeEventListener("mousedown", startDrag);
       element.removeEventListener("touchstart", startDrag);
       window.removeEventListener("mousemove", doDrag);
       window.removeEventListener("touchmove", doDrag);
       window.removeEventListener("mouseup", stopDrag);
       window.removeEventListener("touchend", stopDrag);
-      // Remove canvas
-      parent.removeChild(canvas);
+      document.body.removeChild(canvas); // Remove canvas
+      // Restore original styles
+      Object.assign(element.style, originalStyle);
     };
   }, [effect, options]);
 

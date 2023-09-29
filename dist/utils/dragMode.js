@@ -9,62 +9,65 @@ var useDragModeEffect = function (effect, options) {
         var element = ref.current;
         if (!element || effect !== "dragmode")
             return;
-        var parent = element.parentElement;
-        if (!parent)
-            return;
-        // Set parent to relative positioning
-        parent.style.position = "relative";
-        // Create canvas
-        var canvas = document.createElement("canvas");
+        // Get initial position
         var rect = element.getBoundingClientRect();
-        canvas.width = rect.width;
-        canvas.height = rect.height;
-        // Initialize canvas position
-        canvas.style.position = "absolute";
+        var initialLeft = rect.left;
+        var initialTop = rect.top;
+        // Create Canvas for Background
+        var canvas = document.createElement("div");
+        canvas.style.position = "fixed";
         canvas.style.left = "0";
         canvas.style.top = "0";
-        // Set styles for canvas
+        canvas.style.width = "100%";
+        canvas.style.height = "100%";
         canvas.style.zIndex = "-1";
-        if ((options === null || options === void 0 ? void 0 : options.color) === "light") {
-            canvas.style.backgroundColor = "rgba(255, 255, 255, 0.7)";
-        }
-        else if ((options === null || options === void 0 ? void 0 : options.color) === "dark") {
-            canvas.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
-        }
-        else {
-            canvas.style.opacity = "0";
-        }
-        parent.appendChild(canvas);
-        element.style.position = "absolute";
-        element.style.zIndex = "1";
-        element.style.cursor = "grab";
+        canvas.style.backgroundColor =
+            (options === null || options === void 0 ? void 0 : options.color) === "light"
+                ? "rgba(255, 255, 255, 0.7)"
+                : (options === null || options === void 0 ? void 0 : options.color) === "dark"
+                    ? "rgba(0, 0, 0, 0.7)"
+                    : "transparent";
+        document.body.appendChild(canvas);
+        // Preserve initial styles
+        var originalStyle = {
+            position: element.style.position,
+            left: element.style.left,
+            top: element.style.top,
+            zIndex: element.style.zIndex,
+            cursor: element.style.cursor,
+        };
         var isDragging = false;
         var offsetX = 0, offsetY = 0;
         var startDrag = function (e) {
             isDragging = true;
+            var clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
+            var clientY = "touches" in e ? e.touches[0].clientY : e.clientY;
+            offsetX = clientX - initialLeft;
+            offsetY = clientY - initialTop;
             element.style.cursor = "grabbing";
-            var pageX = "touches" in e ? e.touches[0].pageX : e.pageX;
-            var pageY = "touches" in e ? e.touches[0].pageY : e.pageY;
-            var rect = element.getBoundingClientRect();
-            offsetX = pageX - (rect.left + window.scrollX);
-            offsetY = pageY - (rect.top + window.scrollY);
         };
         var doDrag = function (e) {
             if (!isDragging)
                 return;
-            var pageX = "touches" in e ? e.touches[0].pageX : e.pageX;
-            var pageY = "touches" in e ? e.touches[0].pageY : e.pageY;
-            var x = pageX - offsetX;
-            var y = pageY - offsetY;
-            requestAnimationFrame(function () {
-                element.style.left = "".concat(x - window.scrollX, "px");
-                element.style.top = "".concat(y - window.scrollY, "px");
-            });
+            var clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
+            var clientY = "touches" in e ? e.touches[0].clientY : e.clientY;
+            var x = clientX - offsetX;
+            var y = clientY - offsetY;
+            var maxBoundX = (options === null || options === void 0 ? void 0 : options.maxWidth) || window.innerWidth;
+            var maxBoundY = (options === null || options === void 0 ? void 0 : options.maxHeight) || window.innerHeight;
+            var boundedX = Math.min(Math.max(0, x), maxBoundX);
+            var boundedY = Math.min(Math.max(0, y), maxBoundY);
+            element.style.left = "".concat(boundedX, "px");
+            element.style.top = "".concat(boundedY, "px");
         };
         var stopDrag = function () {
             isDragging = false;
             element.style.cursor = "grab";
         };
+        element.style.position = "fixed";
+        element.style.left = "".concat(initialLeft, "px");
+        element.style.top = "".concat(initialTop, "px");
+        element.style.cursor = "grab";
         element.addEventListener("mousedown", startDrag);
         element.addEventListener("touchstart", startDrag);
         window.addEventListener("mousemove", doDrag);
@@ -72,15 +75,15 @@ var useDragModeEffect = function (effect, options) {
         window.addEventListener("mouseup", stopDrag);
         window.addEventListener("touchend", stopDrag);
         return function () {
-            // Remove event listeners and cleanup
             element.removeEventListener("mousedown", startDrag);
             element.removeEventListener("touchstart", startDrag);
             window.removeEventListener("mousemove", doDrag);
             window.removeEventListener("touchmove", doDrag);
             window.removeEventListener("mouseup", stopDrag);
             window.removeEventListener("touchend", stopDrag);
-            // Remove canvas
-            parent.removeChild(canvas);
+            document.body.removeChild(canvas); // Remove canvas
+            // Restore original styles
+            Object.assign(element.style, originalStyle);
         };
     }, [effect, options]);
     return ref;
