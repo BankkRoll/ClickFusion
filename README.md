@@ -10,23 +10,17 @@ Welcome to ClickFusion, your go-to library for interactive button effects! This 
 ## Quick Links
 
 <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
-
-<a href="https://github.com/BankkRoll/ClickFusion" style="text-decoration: none;">
-<kbd style="padding: 10px;">GitHub Package Repo</kbd>
-</a>
-
-<a href="https://www.npmjs.com/package/clickfusion" style="text-decoration: none;">
-<kbd style="padding: 10px;">NPM Package</kbd>
-</a>
-
-<a href="https://clickfusion.mintlify.app/" style="text-decoration: none;">
-<kbd style="padding: 10px;">Live Docs Mintlify</kbd>
-</a>
-
-<a href="https://github.com/BankkRoll/ClickFusion-docs" style="text-decoration: none;">
-<kbd style="padding: 10px;">GitHub Docs Repo</kbd>
-</a>
-
+  <a href="https://github.com/BankkRoll/ClickFusion" style="text-decoration: none;">
+  <kbd> <br> GitHub Repo <br> </kbd>
+  </a>
+  
+  <a href="https://www.npmjs.com/package/clickfusion" style="text-decoration: none;">
+  <kbd> <br> NPM Package <br> </kbd>
+  </a>
+  
+  <a href="https://clickfusion.mintlify.app/" style="text-decoration: none;">
+  <kbd> <br> Live Docs <br> </kbd>
+  </a>
 </div>
 
 ## Table of Contents
