@@ -1,12 +1,16 @@
 {
   "name": "clickfusion",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "Easy click fusion button effects with multiple styles and effects.",
   "main": "dist/index.js",
+  "module": "dist/index.esm.js",
   "types": "dist/types.d.ts",
   "scripts": {
-    "format": "prettier --write \"src/**/*.ts\"",
-    "build": "tsc",
+    "clean": "rimraf dist",
+    "format": "prettier --write \"src/**/*.{ts,tsx}\"",
+    "build:cjs": "tsc",
+    "build:esm": "tsc --module ESNext --outDir dist/esm",
+    "build": "npm run clean && npm run build:cjs && npm run build:esm",
     "prepublishOnly": "npm run build && npm run format"
   },
   "keywords": [
