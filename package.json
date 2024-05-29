@@ -1,11 +1,10 @@
 {
   "name": "clickfusion",
-  "version": "0.1.7",
-  "description": "Easy click fusion DOM effects with multiple styles and effects.",
+  "version": "0.1.8",
+  "description": "Easy click fusion button effects with multiple styles and effects.",
   "main": "dist/index.js",
-  "types": "dist/types/index.d.ts",
+  "types": "dist/types.d.ts",
   "scripts": {
-    "test": "jest --config=jest.config.js --verbose > __tests__/test-output.log 2>&1",
     "format": "prettier --write \"src/**/*.ts\"",
     "build": "tsc",
     "prepublishOnly": "npm run build && npm run format"
@@ -26,7 +25,7 @@
     "url": "https://github.com/BankkRoll/ClickFusion/issues"
   },
   "homepage": "https://clickfusion.mintlify.app",
-  "author": "bankkroll",
+  "author": "BankkRoll",
   "license": "MIT",
   "dependencies": {
     "canvas": "^2.11.2",
@@ -34,19 +33,9 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.22.20",
-    "@babel/preset-react": "^7.22.15",
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^14.5.1",
-    "@types/jest": "^29.5.5",
     "@types/react": "^18.2.22",
     "@types/react-dom": "^18.2.7",
-    "babel-jest": "^29.7.0",
-    "jest": "^29.7.0",
-    "jest-environment-jsdom": "^29.7.0",
     "prettier": "^2.4.1",
-    "ts-jest": "^29.1.1",
     "typescript": "^5.2.2"
   }
 }

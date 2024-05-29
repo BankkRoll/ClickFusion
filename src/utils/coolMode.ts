@@ -11,7 +11,6 @@ export const useCoolModeEffect = (
 
   useEffect(() => {
     if (ref.current && effect === "coolmode") {
-      // Initialization of the particle effect
       return applyParticleEffect(ref.current, options);
     }
   }, [effect, options]);
@@ -19,7 +18,6 @@ export const useCoolModeEffect = (
   return ref;
 };
 
-// Singleton pattern for generating or fetching the particle effect container
 const getContainer = () => {
   const id = "_coolMode_effect";
   let existingContainer = document.getElementById(id);
@@ -42,7 +40,6 @@ const getContainer = () => {
 
 let instanceCounter = 0;
 
-// Core logic for applying particle effects
 const applyParticleEffect = (
   element: HTMLElement,
   options?: CoolParticleOptions
@@ -61,7 +58,6 @@ const applyParticleEffect = (
 
   const container = getContainer();
 
-  // Function to generate a single particle
   function generateParticle() {
     const size =
       options?.size || sizes[Math.floor(Math.random() * sizes.length)];
@@ -115,7 +111,6 @@ const applyParticleEffect = (
     });
   }
 
-  // Update existing particles' positions and other properties
   function refreshParticles() {
     particles.forEach((p) => {
       p.left = p.left - p.speedHorz * p.direction;
@@ -149,7 +144,6 @@ const applyParticleEffect = (
   let lastParticleTimestamp = 0;
   const particleGenerationDelay = 30;
 
-  // Animation loop for particles
   function loop() {
     const currentTime = performance.now();
     if (
@@ -199,20 +193,17 @@ const applyParticleEffect = (
     passive: true,
   });
 
-  // Cleanup logic
   return () => {
     element.removeEventListener(move, updateMousePosition);
     element.removeEventListener(tap, tapHandler);
     element.removeEventListener(tapEnd, disableAutoAddParticle);
     element.removeEventListener("mouseleave", disableAutoAddParticle);
 
-    // Cancel animation loop once animations are done
     const interval = setInterval(() => {
       if (animationFrame && particles.length === 0) {
         cancelAnimationFrame(animationFrame);
         clearInterval(interval);
 
-        // Clean up container if this is the last instance
         if (--instanceCounter === 0) {
           container.remove();
         }

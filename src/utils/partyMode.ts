@@ -10,7 +10,6 @@ export const usePartyModeEffect = (
 
   useEffect(() => {
     if (ref.current && effect === "partymode") {
-      // Initialization of the particle effect
       return applyParticleEffect(ref.current, options);
     }
   }, [effect, options]);
@@ -18,7 +17,6 @@ export const usePartyModeEffect = (
   return ref;
 };
 
-// Singleton pattern for generating or fetching the particle effect container
 const getContainer = () => {
   const id = "_partyMode_effect";
   let existingContainer = document.getElementById(id);
@@ -41,7 +39,6 @@ const getContainer = () => {
 
 let instanceCounter = 0;
 
-// Core logic for applying particle effects
 const applyParticleEffect = (
   element: HTMLElement,
   options?: PartyParticleOptions
@@ -57,7 +54,6 @@ const applyParticleEffect = (
 
   const container = getContainer();
 
-  // Function to generate a single particle
   function generateParticle() {
     const size = options?.size || 2 + Math.random() * 6;
     const top = mouseY - size / 2;
@@ -66,21 +62,17 @@ const applyParticleEffect = (
     const speed = Math.random() * 10 + 5;
     const color = `hsl(${Math.random() * 360}, 70%, 50%)`;
 
-    // Create the SVG element
     const svgNS = "http://www.w3.org/2000/svg";
     const svg = document.createElementNS(svgNS, "svg");
     svg.setAttribute("width", `${size}px`);
     svg.setAttribute("height", `${size}px`);
 
-    // Create the polygon element (triangle)
     const triangle = document.createElementNS(svgNS, "polygon");
     triangle.setAttribute("points", `${size / 2},0 ${size},${size} 0,${size}`);
     triangle.setAttribute("fill", color);
 
-    // Append the triangle to the SVG
     svg.appendChild(triangle);
 
-    // Create the particle div to hold the SVG
     const particle = document.createElement("div");
     particle.style.position = "absolute";
     particle.style.transform = `translate3d(${left}px, ${top}px, 0px)`;
@@ -98,7 +90,6 @@ const applyParticleEffect = (
     });
   }
 
-  // Update existing particles' positions and other properties
   function refreshParticles() {
     particles.forEach((p) => {
       const dx = p.speed * Math.cos(p.direction);
@@ -107,7 +98,6 @@ const applyParticleEffect = (
       p.left = p.left + dx;
       p.top = p.top + dy;
 
-      // If particle is outside the viewport, remove it
       if (
         p.top > window.innerHeight ||
         p.left > window.innerWidth ||
@@ -127,7 +117,6 @@ const applyParticleEffect = (
 
   let animationFrame: number | undefined;
 
-  // Animation loop for particles
   function loop() {
     if (autoAddParticle && particles.length < limit) {
       generateParticle();
@@ -171,20 +160,17 @@ const applyParticleEffect = (
     passive: true,
   });
 
-  // Cleanup logic
   return () => {
     element.removeEventListener(move, updateMousePosition);
     element.removeEventListener(tap, tapHandler);
     element.removeEventListener(tapEnd, disableAutoAddParticle);
     element.removeEventListener("mouseleave", disableAutoAddParticle);
 
-    // Cancel animation loop once animations are done
     const interval = setInterval(() => {
       if (animationFrame && particles.length === 0) {
         cancelAnimationFrame(animationFrame);
         clearInterval(interval);
 
-        // Clean up container if this is the last instance
         if (--instanceCounter === 0) {
           container.remove();
         }

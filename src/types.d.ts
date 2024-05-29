@@ -1,3 +1,5 @@
+// src/types.d.ts
+
 /**
  * Base properties for all particles
  */
@@ -22,10 +24,15 @@ export interface BaseParticleOptions {
  * Properties specific to CoolMode
  */
 export interface CoolParticle extends BaseParticle {
+  /** Direction of particles in degrees */
   direction: number;
+  /** Horizontal speed of particles */
   speedHorz: number;
+  /** Upward speed of particles */
   speedUp: number;
+  /** Spin speed of particles in degrees */
   spinSpeed: number;
+  /** Spin value of particles in degrees */
   spinVal: number;
 }
 
@@ -45,6 +52,7 @@ export interface CoolParticleOptions extends BaseParticleOptions {
  * Properties specific to RainingMode
  */
 export interface RainingParticle extends BaseParticle {
+  /** Downward speed of particles */
   speedDown: number;
 }
 
@@ -62,7 +70,9 @@ export interface RainingParticleOptions extends BaseParticleOptions {
  * Properties specific to PartyMode
  */
 export interface PartyParticle extends BaseParticle {
+  /** Direction of particles in degrees */
   direction: number;
+  /** Downward speed of particles */
   speed: number;
 }
 
@@ -78,8 +88,11 @@ export interface PartyParticleOptions extends BaseParticleOptions {
  * Properties specific to ConfettiMode
  */
 export interface ConfettiParticle extends BaseParticle {
+  /** Downward speed of particles */
   speedDown: number;
+  /** Color of particles */
   color: string;
+  /** Spin speed of particles in degrees */
   rotateX: number;
   rotateY: number;
   rotateZ: number;
@@ -101,7 +114,9 @@ export interface ConfettiParticleOptions extends BaseParticleOptions {
  * Properties specific to CodeFall
  */
 export interface CodeFallParticle extends BaseParticle {
+  /** Downward speed of particles */
   speedDown: number;
+  /** Text color of particles */
   color: "light" | "dark";
 }
 

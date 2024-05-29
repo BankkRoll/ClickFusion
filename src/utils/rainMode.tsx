@@ -1,10 +1,14 @@
 // src/utils/rainMode.tsx
-import { useEffect, useRef, RefObject, useCallback } from 'react';
-import { RainingParticle, RainingParticleOptions, EffectType } from '../types';
+import { useEffect, useRef, RefObject, useCallback } from "react";
+import { RainingParticle, RainingParticleOptions, EffectType } from "../types";
 
-export const useRainModeEffect = (effect: EffectType, options?: RainingParticleOptions) => {
+export const useRainModeEffect = (
+  effect: EffectType,
+  options?: RainingParticleOptions
+) => {
   const ref: RefObject<HTMLButtonElement | HTMLAnchorElement> = useRef(null);
   const particles: RainingParticle[] = useRef([]).current;
+  const intervalIdRef = useRef<number | null>(null);
 
   const particleCount = options?.particleCount || 30;
   const speed = options?.speedDown || 5;
@@ -20,7 +24,7 @@ export const useRainModeEffect = (effect: EffectType, options?: RainingParticleO
   const generateParticle = () => {
     const left = Math.random() * window.innerWidth;
     const top = 0;
-    const particle = document.createElement('div');
+    const particle = document.createElement("div");
 
     if (customImage) {
       particle.innerHTML = `<img src="${customImage}" width="${size}" height="${size}" />`;
@@ -30,10 +34,10 @@ export const useRainModeEffect = (effect: EffectType, options?: RainingParticleO
       particle.style.backgroundColor = `hsl(${Math.random() * 360}, 70%, 50%)`;
     }
 
-    particle.style.position = 'fixed';
+    particle.style.position = "fixed";
     particle.style.top = `${top}px`;
     particle.style.left = `${left}px`;
-    particle.style.zIndex = '2147483647';
+    particle.style.zIndex = "2147483647";
 
     document.body.appendChild(particle);
 
@@ -60,17 +64,21 @@ export const useRainModeEffect = (effect: EffectType, options?: RainingParticleO
 
   const handleClick = useCallback(() => {
     cleanupParticles();
-    let intervalId = setInterval(() => {
+    if (intervalIdRef.current !== null) {
+      clearInterval(intervalIdRef.current);
+    }
+    intervalIdRef.current = window.setInterval(() => {
       generateParticle();
       if (particles.length >= particleCount) {
-        clearInterval(intervalId);
+        clearInterval(intervalIdRef.current!);
+        intervalIdRef.current = null;
       }
     }, 100);
   }, [particleCount, particles]);
 
   useEffect(() => {
     // Skip server-side rendering
-    if (typeof document === 'undefined') return;
+    if (typeof document === "undefined") return;
 
     let animationFrame: number;
 
@@ -79,16 +87,22 @@ export const useRainModeEffect = (effect: EffectType, options?: RainingParticleO
       animationFrame = requestAnimationFrame(loop);
     };
 
-    if (ref.current && effect === 'rainmode') {
-      ref.current.addEventListener('click', handleClick);
+    if (ref.current && effect === "rainmode") {
+      ref.current.addEventListener("click", handleClick);
       loop();
     }
 
     return () => {
       if (ref.current) {
-        ref.current.removeEventListener('click', handleClick);
+        ref.current.removeEventListener("click", handleClick);
       }
-      cancelAnimationFrame(animationFrame);
+      if (animationFrame) {
+        cancelAnimationFrame(animationFrame);
+      }
+      if (intervalIdRef.current !== null) {
+        clearInterval(intervalIdRef.current);
+        intervalIdRef.current = null;
+      }
       cleanupParticles();
     };
   }, [effect, handleClick, refreshParticles]);
