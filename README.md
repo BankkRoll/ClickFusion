@@ -12,76 +12,22 @@ Welcome to ClickFusion, your go-to library for interactive button effects! This 
 <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
 
 <a href="https://github.com/BankkRoll/ClickFusion" style="text-decoration: none;">
-<kbd style="
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 200px;
-  height: 50px;
-  font-size: 16px;
-  font-weight: bold;
-  background: #007bff;
-  border: 2px solid #0056b3;
-  border-radius: 8px;
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-  color: white;
-">GitHub Package Repo</kbd>
+<kbd style="padding: 10px;">GitHub Package Repo</kbd>
 </a>
 
 <a href="https://www.npmjs.com/package/clickfusion" style="text-decoration: none;">
-<kbd style="
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 200px;
-  height: 50px;
-  font-size: 16px;
-  font-weight: bold;
-  background: #007bff;
-  border: 2px solid #0056b3;
-  border-radius: 8px;
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-  color: white;
-">NPM Package</kbd>
+<kbd style="padding: 10px;">NPM Package</kbd>
 </a>
 
 <a href="https://clickfusion.mintlify.app/" style="text-decoration: none;">
-<kbd style="
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 200px;
-  height: 50px;
-  font-size: 16px;
-  font-weight: bold;
-  background: #007bff;
-  border: 2px solid #0056b3;
-  border-radius: 8px;
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-  color: white;
-">Live Docs Mintlify</kbd>
+<kbd style="padding: 10px;">Live Docs Mintlify</kbd>
 </a>
 
 <a href="https://github.com/BankkRoll/ClickFusion-docs" style="text-decoration: none;">
-<kbd style="
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 200px;
-  height: 50px;
-  font-size: 16px;
-  font-weight: bold;
-  background: #007bff;
-  border: 2px solid #0056b3;
-  border-radius: 8px;
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-  color: white;
-">GitHub Docs Repo</kbd>
+<kbd style="padding: 10px;">GitHub Docs Repo</kbd>
 </a>
 
 </div>
-
-
 
 ## Table of Contents
 
